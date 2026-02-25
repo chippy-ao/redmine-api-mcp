@@ -1,5 +1,7 @@
 # redmine-api-mcp
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧できるMCPサーバー。
 
 ## セットアップ
@@ -11,7 +13,7 @@ Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧
   "mcpServers": {
     "redmine": {
       "command": "bunx",
-      "args": ["github:<user>/redmine-api-mcp"],
+      "args": ["github:chippy-ao/redmine-api-mcp"],
       "env": {
         "REDMINE_URL": "https://your-redmine.example.com",
         "REDMINE_API_KEY": "your-api-key"
@@ -25,8 +27,10 @@ Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧
 
 | 変数名 | 必須 | 説明 |
 |---|---|---|
-| `REDMINE_URL` | Yes | RedmineサーバーのベースURL |
+| `REDMINE_URL` | Yes | RedmineサーバーのベースURL（例: `https://redmine.example.com`） |
 | `REDMINE_API_KEY` | Yes | Redmine APIキー |
+
+> **Note:** サブパス配下で動作するRedmine（例: `https://example.com/redmine`）にも対応しています。
 
 ## ツール一覧
 
@@ -42,7 +46,7 @@ Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧
 
 ## 前提条件
 
-- Bun ランタイム
+- [Bun](https://bun.sh/) ランタイム
 - Redmine 5.1.0+（キーワード検索の `any_searchable` フィルタ使用のため）
 
 ## 開発
@@ -51,5 +55,9 @@ Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧
 bun install
 bun test
 bun run check
-bun run dev
+bun run build
 ```
+
+## ライセンス
+
+[MIT](LICENSE)
