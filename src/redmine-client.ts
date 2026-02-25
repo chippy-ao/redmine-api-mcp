@@ -8,14 +8,14 @@ export class RedmineClient {
 	}
 
 	async get<T>(path: string, params?: Record<string, string>): Promise<T> {
-		const url = new URL(path, this.baseUrl);
-		if (params) {
-			for (const [key, value] of Object.entries(params)) {
-				url.searchParams.append(key, value);
-			}
-		}
+		const query = params
+			? `?${Object.entries(params)
+					.map(([k, v]) => `${k}=${encodeURIComponent(v)}`)
+					.join("&")}`
+			: "";
+		const url = `${this.baseUrl}${path}${query}`;
 
-		const response = await fetch(url.toString(), {
+		const response = await fetch(url, {
 			method: "GET",
 			headers: {
 				"X-Redmine-API-Key": this.apiKey,
