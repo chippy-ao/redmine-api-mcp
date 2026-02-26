@@ -1,3 +1,4 @@
+#!/usr/bin/env bun
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { getConfig } from "./config";
 import { RedmineClient } from "./redmine-client";
