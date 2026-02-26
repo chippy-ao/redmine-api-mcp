@@ -51,5 +51,71 @@ describe("search_issues", () => {
 			const query = buildFilterQuery(undefined);
 			expect(query).toBe("");
 		});
+
+		it("keyword + tracker_id でトラッカーもf[]/op[]/v[]形式になる", () => {
+			const query = buildFilterQuery("データ移行", { tracker_id: 70 });
+			expect(query).toContain("f[]=tracker_id");
+			expect(query).toContain("op[tracker_id]==");
+			expect(query).toContain("v[tracker_id][]=70");
+			expect(query).toContain("f[]=any_searchable");
+		});
+
+		it("keyword + assigned_to_id で担当者もフィルタ形式になる", () => {
+			const query = buildFilterQuery("テスト", { assigned_to_id: "me" });
+			expect(query).toContain("f[]=assigned_to_id");
+			expect(query).toContain("op[assigned_to_id]==");
+			expect(query).toContain("v[assigned_to_id][]=me");
+		});
+
+		it("keyword + category_id でカテゴリもフィルタ形式になる", () => {
+			const query = buildFilterQuery("テスト", { category_id: 5 });
+			expect(query).toContain("f[]=category_id");
+			expect(query).toContain("op[category_id]==");
+			expect(query).toContain("v[category_id][]=5");
+		});
+
+		it("keyword + fixed_version_id でバージョンもフィルタ形式になる", () => {
+			const query = buildFilterQuery("テスト", { fixed_version_id: 3 });
+			expect(query).toContain("f[]=fixed_version_id");
+			expect(query).toContain("op[fixed_version_id]==");
+			expect(query).toContain("v[fixed_version_id][]=3");
+		});
+
+		it("keyword + status_id(数値ID) でステータスもフィルタ形式になる", () => {
+			const query = buildFilterQuery("テスト", { status_id: "2" });
+			expect(query).toContain("f[]=status_id");
+			expect(query).toContain("op[status_id]==");
+			expect(query).toContain("v[status_id][]=2");
+		});
+
+		it("keyword + status_id(open) はフィルタ形式に含めない", () => {
+			const query = buildFilterQuery("テスト", { status_id: "open" });
+			expect(query).not.toContain("f[]=status_id");
+		});
+
+		it("keyword + status_id(closed) はフィルタ形式に含めない", () => {
+			const query = buildFilterQuery("テスト", { status_id: "closed" });
+			expect(query).not.toContain("f[]=status_id");
+		});
+
+		it("keyword + status_id(*) はフィルタ形式に含めない", () => {
+			const query = buildFilterQuery("テスト", { status_id: "*" });
+			expect(query).not.toContain("f[]=status_id");
+		});
+
+		it("keyword + 複数フィルタを同時に指定できる", () => {
+			const query = buildFilterQuery("データ移行", {
+				tracker_id: 70,
+				assigned_to_id: 10,
+				status_id: "2",
+			});
+			expect(query).toContain("f[]=any_searchable");
+			expect(query).toContain("f[]=tracker_id");
+			expect(query).toContain("f[]=assigned_to_id");
+			expect(query).toContain("f[]=status_id");
+			expect(query).toContain("v[tracker_id][]=70");
+			expect(query).toContain("v[assigned_to_id][]=10");
+			expect(query).toContain("v[status_id][]=2");
+		});
 	});
 });

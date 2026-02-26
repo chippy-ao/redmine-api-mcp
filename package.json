@@ -1,6 +1,6 @@
 {
 	"name": "redmine-api-mcp",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Redmine MCP Server - Access Redmine issues via Model Context Protocol",
 	"type": "module",
 	"bin": {
