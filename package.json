@@ -3,8 +3,10 @@
 	"version": "1.0.0",
 	"description": "Redmine MCP Server - Access Redmine issues via Model Context Protocol",
 	"type": "module",
-	"bin": "dist/index.js",
-	"main": "dist/index.js",
+	"bin": {
+		"redmine-api-mcp": "./src/index.ts"
+	},
+	"main": "./src/index.ts",
 	"scripts": {
 		"dev": "bun run src/index.ts",
 		"build": "bun build src/index.ts --outdir dist --target node",
