@@ -14,5 +14,9 @@ dist/
 .env
 .env.local
 
-# Plans (design docs)
+# Plans (temporary design plans)
 docs/plans/
+
+# Spec Kit
+.specify/
+.claude/skills/speckit*
