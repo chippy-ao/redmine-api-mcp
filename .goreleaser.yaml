@@ -1,0 +1,30 @@
+version: 2
+builds:
+  - binary: redmine-cli
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+brews:
+  - repository:
+      owner: chippy-ao
+      name: homebrew-tap
+    directory: Formula
+    homepage: https://github.com/chippy-ao/redmine-cli
+    description: "Redmine CLI - Redmine REST API を操作する CLI ツール"
+
+changelog:
+  sort: asc

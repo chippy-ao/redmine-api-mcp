@@ -1,63 +1,78 @@
-# redmine-api-mcp
+# redmine-cli
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+Redmine REST API を操作する Go 製 CLI ツール。
 
-Redmine MCP Server — RedmineのチケットをAIツールから検索・閲覧できるMCPサーバー。
+## インストール
+
+### Homebrew (macOS)
+```bash
+brew install chippy-ao/tap/redmine-cli
+```
+
+### mise (macOS/Linux)
+```bash
+mise use -g chippy-ao/redmine-cli
+```
+
+### go install
+```bash
+go install github.com/chippy-ao/redmine-cli@latest
+```
+
+### GitHub Releases
+https://github.com/chippy-ao/redmine-cli/releases から各OS向けバイナリをダウンロード。
 
 ## セットアップ
 
-`.mcp.json` に以下を追加：
+```bash
+# プロファイルを追加
+redmine-cli config add work --url https://redmine.example.com --api-key YOUR_API_KEY
 
-```json
-{
-  "mcpServers": {
-    "redmine": {
-      "command": "bunx",
-      "args": ["github:chippy-ao/redmine-api-mcp"],
-      "env": {
-        "REDMINE_URL": "https://your-redmine.example.com",
-        "REDMINE_API_KEY": "your-api-key"
-      }
-    }
-  }
-}
+# デフォルトプロファイルを設定（最初に追加したものが自動でデフォルトになる）
+redmine-cli config set-default work
+
+# プロファイル一覧
+redmine-cli config list
 ```
 
-## 環境変数
+## 使い方
 
-| 変数名 | 必須 | 説明 |
-|---|---|---|
-| `REDMINE_URL` | Yes | RedmineサーバーのベースURL（例: `https://redmine.example.com`） |
-| `REDMINE_API_KEY` | Yes | Redmine APIキー |
+### チケット検索
+```bash
+redmine-cli search --keyword "バグ" --status open
+redmine-cli search --project myproject --assigned-to me
+redmine-cli search --keyword "ログイン" --tracker-id 1 --limit 10
+```
 
-> **Note:** サブパス配下で動作するRedmine（例: `https://example.com/redmine`）にも対応しています。
+### チケット詳細
+```bash
+redmine-cli get-issue 1234
+redmine-cli get-issue 1234 --include journals,children
+```
 
-## ツール一覧
+### 一覧取得
+```bash
+redmine-cli projects
+redmine-cli trackers
+redmine-cli statuses
+redmine-cli categories --project myproject
+redmine-cli versions --project myproject
+```
 
-| ツール | 説明 |
-|---|---|
-| `search_issues` | チケットをキーワード・フィルタで検索 |
-| `get_issue` | チケットの詳細を取得 |
-| `list_projects` | プロジェクト一覧を取得 |
-| `list_trackers` | トラッカー一覧を取得 |
-| `list_issue_statuses` | ステータス一覧を取得 |
-| `list_issue_categories` | カテゴリ一覧を取得（要project_id） |
-| `list_versions` | バージョン一覧を取得（要project_id） |
+### 複数環境の切り替え
+```bash
+redmine-cli --profile work search --keyword "タスク"
+redmine-cli --profile oss search --keyword "issue"
+```
+
+## 出力
+
+すべてのコマンドは JSON を stdout に出力します。エラーは stderr に出力されます。
 
 ## 前提条件
 
-- [Bun](https://bun.sh/) ランタイム
-- Redmine 5.1.0+（キーワード検索の `any_searchable` フィルタ使用のため）
-
-## 開発
-
-```bash
-bun install
-bun test
-bun run check
-bun run build
-```
+- Redmine 5.1.0+（keyword 検索に `any_searchable` フィルタを使用）
 
 ## ライセンス
 
-[MIT](LICENSE)
+MIT

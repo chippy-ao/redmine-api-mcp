@@ -5,14 +5,22 @@
 # macOS
 .DS_Store
 
-# Node.js
-node_modules/
-dist/
-*.log
+# Go
+redmine-cli
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+vendor/
 
 # Environment
 .env
 .env.local
 
-# Plans (design docs)
+# Plans (temporary design plans)
 docs/plans/
+
+# Spec Kit
+.specify/
+.claude/skills/speckit*
